@@ -78,6 +78,4 @@ public class CalibrationCode {
         return Integer.parseInt(twoDigit);
     }
 
-
-
 }
