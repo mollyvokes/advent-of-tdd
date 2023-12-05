@@ -17,7 +17,8 @@ public class EnginePartFinder {
 
         int partNumberSum = schematic.findPartNumbers();
 
-        System.out.println("The part number sum for this schematic is: " + partNumberSum);
+//        System.out.println("The part numbers for this are: " + schematic.partNumbers);
+        System.out.println("The gear number sum for this schematic is: " + partNumberSum);
 
     }
 }

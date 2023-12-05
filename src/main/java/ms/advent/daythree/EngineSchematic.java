@@ -15,51 +15,62 @@ public class EngineSchematic {
     }
 
     public int findPartNumbers() {
+        int gearNumberTotal = 0;
+
         for (int i = 0; i < this.schematic.size(); i++) {
             for (int j = 0; j < this.schematic.get(0).length(); j++) {
-                if (this.isSymbol(this.schematic.get(i).charAt(j))) {
-                    this.searchSurroundingSymbol(i, j);
+                // change from symbol to * for part two
+                if (this.schematic.get(i).charAt(j) == '*') {
+                    List<Integer> allPartNumbers = this.searchSurroundingSymbol(i, j);
+//                    System.out.println("allPartNumbers: " + allPartNumbers);
+                    if (allPartNumbers.size() == 2) {
+                        gearNumberTotal += allPartNumbers.get(0) * allPartNumbers.get(1);
+                    }
+
                 }
             }
         }
-        int partNumberTotal = 0;
-        for (int partNumber: this.partNumbers) {
-            partNumberTotal += partNumber;
+        return gearNumberTotal;
+    }
+
+    public List<Integer> searchSurroundingSymbol(int row, int col) {
+        List<String> schematicForSymbol;
+        schematicForSymbol = this.schematic;
+
+        List<Integer> partNumberForSymbol = new ArrayList<>();
+
+        if (this.getValidAndDigit(schematicForSymbol, row-1, col)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row-1,col));
         }
-        return partNumberTotal;
+        if (this.getValidAndDigit(schematicForSymbol, row-1, col+1)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row-1,col+1));
+        }
+        if (this.getValidAndDigit(schematicForSymbol, row, col+1)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row, col+1));
+        }
+        if (this.getValidAndDigit(schematicForSymbol, row+1, col+1)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row+1, col+1));
+        }
+        if (this.getValidAndDigit(schematicForSymbol, row+1, col)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row+1, col));
+        }
+        if (this.getValidAndDigit(schematicForSymbol, row+1, col-1)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row+1, col-1));
+        }
+        if (this.getValidAndDigit(schematicForSymbol, row, col-1)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row, col-1));
+        }
+        if (this.getValidAndDigit(schematicForSymbol, row-1, col-1)) {
+            partNumberForSymbol.add(this.findFullNumber(schematicForSymbol, row-1, col-1));
+        }
+
+        return partNumberForSymbol;
     }
 
-    public void searchSurroundingSymbol(int row, int col) {
-        if (this.getValidAndDigit(row-1, col)) {
-            this.removePartNumber(row-1,col);
-        };
-        if (this.getValidAndDigit(row-1, col+1)) {
-            this.removePartNumber(row-1,col+1);
-        };
-        if (this.getValidAndDigit(row, col+1)) {
-            this.removePartNumber(row, col+1);
-        };
-        if (this.getValidAndDigit(row+1, col+1)) {
-            this.removePartNumber(row+1, col+1);
-        };
-        if (this.getValidAndDigit(row+1, col)) {
-            this.removePartNumber(row+1, col);
-        };
-        if (this.getValidAndDigit(row+1, col-1)) {
-            this.removePartNumber(row+1, col-1);
-        };
-        if (this.getValidAndDigit(row, col-1)) {
-            this.removePartNumber(row, col-1);
-        };
-        if (this.getValidAndDigit(row-1, col-1)) {
-            this.removePartNumber(row-1, col-1);
-        };
-    }
-
-    public boolean getValidAndDigit(int row, int col) {
+    public boolean getValidAndDigit(List<String> schema, int row, int col) {
         boolean validAndDigit = false;
-        if (row >= 0 && row < this.schematic.size() && col >= 0 && col < this.schematic.get(0).length()) {
-            char adjacentChar = this.schematic.get(row).charAt(col);
+        if (row >= 0 && row < schema.size() && col >= 0 && col < schema.get(0).length()) {
+            char adjacentChar = schema.get(row).charAt(col);
             if (Character.isDigit(adjacentChar)) {
                 validAndDigit = true;
             }
@@ -67,12 +78,12 @@ public class EngineSchematic {
         return validAndDigit;
     }
 
-    public void removePartNumber(int row, int col) {
-        this.partNumbers.add(this.findFullNumber(row, col));
+    public void removePartNumber(List<String> schema, int row, int col) {
+        this.partNumbers.add(this.findFullNumber(schema, row, col));
     }
 
-    public Integer findFullNumber(int row, int col) {
-        String fullRow = this.schematic.get(row);
+    public Integer findFullNumber(List<String> schema, int row, int col) {
+        String fullRow = schema.get(row);
         char[] newRow = fullRow.toCharArray();
 
         String number = String.valueOf(fullRow.charAt(col));
@@ -100,8 +111,7 @@ public class EngineSchematic {
                 break;
             }
         }
-
-        this.schematic.set(row, String.valueOf(newRow));
+        schema.set(row, String.valueOf(newRow));
 
         return Integer.valueOf(number);
     }
