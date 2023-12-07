@@ -35,6 +35,7 @@ public class WinningScratchCards {
         return cardScore;
     }
 
+
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("src/main/resources/day-four-scratch-cards.txt");
         List<String> allCards = Files.readAllLines(path);
