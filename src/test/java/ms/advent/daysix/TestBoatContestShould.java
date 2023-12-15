@@ -22,28 +22,35 @@ public class TestBoatContestShould {
     }
 
     @Test
+    void get_full_figure() {
+        String times = "Time:      7  15   30";
+        Long totalTime = 71530L;
+        assertThat(getFigure(times), Matchers.equalTo(totalTime));
+    }
+
+    @Test
     void get_distances_for_time() {
-        int testTime = 7;
-        List<Integer> possibleDistances = new ArrayList<>();
-        possibleDistances.add(6);
-        possibleDistances.add(10);
-        possibleDistances.add(12);
-        possibleDistances.add(12);
-        possibleDistances.add(10);
-        possibleDistances.add(6);
+        Long testTime = 7L;
+        List<Long> possibleDistances = new ArrayList<>();
+        possibleDistances.add(6L);
+        possibleDistances.add(10L);
+        possibleDistances.add(12L);
+        possibleDistances.add(12L);
+        possibleDistances.add(10L);
+        possibleDistances.add(6L);
         assertThat(getDistancesForTime(testTime), Matchers.equalTo(possibleDistances));
     }
 
     @Test
     void get_number_ways_to_win() {
-        List<Integer> possibleDistances = new ArrayList<>();
-        possibleDistances.add(6);
-        possibleDistances.add(10);
-        possibleDistances.add(12);
-        possibleDistances.add(12);
-        possibleDistances.add(10);
-        possibleDistances.add(6);
-        int recordDist = 9;
+        List<Long> possibleDistances = new ArrayList<>();
+        possibleDistances.add(6L);
+        possibleDistances.add(10L);
+        possibleDistances.add(12L);
+        possibleDistances.add(12L);
+        possibleDistances.add(10L);
+        possibleDistances.add(6L);
+        Long recordDist = 9L;
         assertThat(numberWaysToWin(recordDist, possibleDistances), Matchers.equalTo(4));
     }
 }
