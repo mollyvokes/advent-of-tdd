@@ -10,7 +10,7 @@ public class CamelCardHand {
     static
     {
         cardValue.put("T", 10);
-        cardValue.put("J", 11);
+        cardValue.put("J", 1);
         cardValue.put("Q", 12);
         cardValue.put("K", 13);
         cardValue.put("A", 14);
@@ -39,13 +39,35 @@ public class CamelCardHand {
         return constructedHand;
     }
 
+    public static Map<Integer, Integer> optimiseWithJacks(Map<Integer, Integer> dupes) {
+        Map<Integer, Integer> optCards = new HashMap<>();
+        if (dupes.containsKey(1)) {
+            int numJacks = dupes.get(1);
+            if (numJacks == 5) {
+                optCards.put(1,5);
+                return optCards;
+            }
+            dupes.remove(1);
+            int maxValue = Collections.max(dupes.values());
+            int optNumbers = numJacks + maxValue;
+            optCards.put(1, optNumbers);
+        } else {
+            dupes.entrySet().removeIf(entry -> entry.getValue() <= 1);
+            return dupes;
+        }
+        dupes.entrySet().removeIf(entry -> entry.getValue() <= 1);
+        if (dupes.size()==2) {
+            optCards.put(2,2);
+        }
+        return optCards;
+    }
+
     public Map<Integer, Integer> findDuplicates() {
         Map<Integer, Integer> duplicates = new HashMap<>();
         for (Integer card: this.hand) {
             duplicates.put(card, duplicates.getOrDefault(card, 0) + 1);
         }
-        duplicates.entrySet().removeIf(entry -> entry.getValue() <= 1);
-        return duplicates;
+        return optimiseWithJacks(duplicates);
     }
 
     public String getHandType() {

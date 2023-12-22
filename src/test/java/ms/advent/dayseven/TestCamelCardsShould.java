@@ -110,4 +110,57 @@ public class TestCamelCardsShould {
         assertThat(findIndexToInsert(currentTestList, testHandThree), Matchers.equalTo(1));
     }
 
+    @Test
+    void correctly_opt_with_jacks() {
+        Map<Integer, Integer> duplicates = new HashMap<>();
+        duplicates.put(1,1);
+        duplicates.put(2,1);
+        duplicates.put(3,2);
+        duplicates.put(10,1);
+        Map<Integer, Integer> optDuplicates = new HashMap<>();
+        optDuplicates.put(1,3);
+        assertThat(optimiseWithJacks(duplicates), Matchers.equalTo(optDuplicates));
+    }
+
+    @Test
+    void correctly_opt_without_jacks() {
+        Map<Integer, Integer> duplicates = new HashMap<>();
+        duplicates.put(5,1);
+        duplicates.put(2,1);
+        duplicates.put(3,2);
+        duplicates.put(10,1);
+        Map<Integer, Integer> optDuplicates = new HashMap<>();
+        optDuplicates.put(3,2);
+        assertThat(optimiseWithJacks(duplicates), Matchers.equalTo(optDuplicates));
+    }
+
+    @Test
+    void correctly_opt_with_even_jacks() {
+        Map<Integer, Integer> duplicates = new HashMap<>();
+        duplicates.put(1,1);
+        duplicates.put(2,2);
+        duplicates.put(3,2);
+        duplicates.put(10,1);
+        Map<Integer, Integer> optDuplicates = new HashMap<>();
+        optDuplicates.put(1,3);
+        optDuplicates.put(2,2);
+        assertThat(optimiseWithJacks(duplicates), Matchers.equalTo(optDuplicates));
+    }
+
+    @Test
+    void get_duplicates_with_jacks() {
+        CamelCardHand cardHand = new CamelCardHand("32T3J", 765);
+        Map<Integer, Integer> duplicates = new HashMap<>();
+        duplicates.put(1, 3);
+        assertThat(cardHand.findDuplicates(), Matchers.equalTo(duplicates));
+    }
+
+    @Test
+    void get_duplicates_with_multiple_jacks() {
+        CamelCardHand cardHand = new CamelCardHand("322JJ", 765);
+        Map<Integer, Integer> duplicates = new HashMap<>();
+        duplicates.put(1, 4);
+        assertThat(cardHand.findDuplicates(), Matchers.equalTo(duplicates));
+    }
+
 }

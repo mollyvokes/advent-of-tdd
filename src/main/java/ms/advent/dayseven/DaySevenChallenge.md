@@ -17,3 +17,11 @@
 ### Breakdown of Problem
 
 - need to take each hard and figure out each what value it is - could start by seeing how many of the same number are in each hand ? and if not, check for the order - probably sort the cards first. 
+
+### P2 
+
+Jack is now a wildcard and will be whatever card would make the hand strongest. But individually they become the weakest - so have value 1.
+When you compare 2 hands of same type, J should be seen as a 1 
+
+- need to change J to value 1
+- need to consider number of 1's and add it to the highest value other repeating cards
